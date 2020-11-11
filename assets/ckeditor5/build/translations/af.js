@@ -1,0 +1,1 @@
+(function(i){const n=i["af"]=i["af"]||{};n.dictionary=Object.assign(n.dictionary||{},{Bold:"Vetgedruk",Italic:"Skuinsgedruk",Superscript:"Boskrif"});n.getPluralForm=function(i){return i!=1}})(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));
