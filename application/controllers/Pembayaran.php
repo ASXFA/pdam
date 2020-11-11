@@ -42,6 +42,7 @@ class Pembayaran extends CI_Controller {
     
     public function tambah()
     {
+        $this->load->model('tagihan_model');
         $pelanggan_id = $this->input->post('pelanggan_id');
         $tagihan_id = $this->input->post('tagihan_id');
         $cash = $this->input->post('cash');
@@ -52,7 +53,7 @@ class Pembayaran extends CI_Controller {
             'pesanPembayaran' => 'Pembayaran berhasil !',
             'pembayaran_id' => $query
         );
-        $this->tagihan_model->gantiStatus($query,1);
+        $this->tagihan_model->gantiStatus($tagihan_id,1);
         echo json_encode($data);
     }
 

@@ -245,7 +245,7 @@
                                                                 $('#jumlahTagihan').html(response.total);
                                                                 var hitungSubTotal = parseInt(response.total) + parseInt(response.denda);
                                                                 $('#totalTagihan').html(hitungSubTotal);
-                                                                $('#totalSemua').html(formatRupiah(hitungSubTotal))
+                                                                $('#totalSemua').html(formatRupiah(String(hitungSubTotal)))
                                                             }else{
                                                                 var totalConv = formatRupiah(response.total,'Rp. ');
                                                                 $('#jumlahTagihan').html(response.total);

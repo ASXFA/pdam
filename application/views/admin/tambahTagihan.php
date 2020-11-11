@@ -287,8 +287,6 @@
             url:'<?= base_url('tagihan/ambilGolLevel') ?>',
             data:{golId:golongan,volume:volume},
             success:function(datas){
-                alert(datas.volume);
-                alert(datas.golongan);
                 harga += datas.harga;
                 beban += parseInt(datas.beban);
                 total += (beban + harga); 

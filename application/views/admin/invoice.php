@@ -77,7 +77,7 @@
                                     <strong>Dilayani Oleh</strong>
                                 </td>
                                 <td class="right">
-                                    <strong><?= $pembayaran->created_by ?></strong>
+                                    <strong><?= $this->session->userdata('nama') ?></strong>
                                 </td>
                             </tr>
                         </tbody>
