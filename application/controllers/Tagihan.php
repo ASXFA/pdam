@@ -31,7 +31,7 @@ class Tagihan extends CI_Controller {
         }
         if ($this->session->userdata('level')==2) {
             $data['pelanggan'] = $this->pelanggan_model->cekNorek($this->session->userdata('no_rekening'))->row();
-            $data['tagihan2'] = $this->tagihan_model->getByPelIdDesc($data['pelanggan']->id)->row();
+            $data['tagihan2'] = $this->tagihan_model->getByPelIdDesc($data['pelanggan']->id)->result();
         }
         $this->load->view('template/header');
         $this->load->view('template/sider');

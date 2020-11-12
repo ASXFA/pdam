@@ -109,9 +109,11 @@
                                     <div class="col-md-1 mr-3">
                                         <button type="submit" class="btn btn-primary d-inline">Tampilkan</button>
                                     </div>
+                                    <?php if(isset($_GET['filter'])){ ?>
                                     <div class="col-md-1">
                                         <a href="<?= base_url('pembayaran/printPdfFilter/'.$_GET['bulan'].'/'.$_GET['tahun']) ?>" class="btn btn-success"><i class="fa fa-file-pdf-o"></i> Ekspor Ke PDF</a>
                                     </div>
+                                    <?php } ?>
                                 </div>
                                 </form>
                             </div>

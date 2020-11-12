@@ -261,82 +261,55 @@
                         <?php
                             }else{
                         ?>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">No Rekening</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="no_rekening" name="no_rekening" value="<?= $this->session->userdata('no_rekening') ?>" class="form-control" readonly>
-                                            <input type="text" id="pelanggan_id" name="pelanggan_id" class="form-control" hidden>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Nama</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="nama" value="<?= $this->session->userdata('nama') ?>" class="form-control" readonly>
-                                            <input type="text" id="golongan" class="form-control" hidden>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Alamat</label>
-                                        <div class="col-sm-10">
-                                        <textarea name="alamat" id="alamat" cols="30" rows="2" class="form-control" readonly><?= $pelanggan->alamat ?></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">HP</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="no_hp" class="form-control" value="<?= $pelanggan->no_hp ?>" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Bulan</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="no_hp" class="form-control" value="<?= $tagihan2->periode ?>" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Tahun</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="no_hp" class="form-control" value="<?= $tagihan2->tahun ?>" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Mtr Lama</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" name="mtr_lama" class="form-control" id="mtr_lama" value="<?= $tagihan2->mtr_lama ?>" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Mtr Baru</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" name="mtr_baru" class="form-control"  value="<?= $tagihan2->mtr_baru ?>" id="mtr_baru" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Volume Pemakaian</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" name="volume" class="form-control" id="volume" value="<?= $tagihan2->volume ?>" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 col-form-label">Detail</label>
-                                        <div class="col-sm-10">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <th>Total (Rp)</th>
-                                                </thead>
-                                                <tbody>
-                                                    <td id="tbTotal"><h4><?="Rp. ".number_format($tagihan2->total) ?></h4></td>
-                                                    <input type="text" id="total" name="total" hidden>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <table id="bootstrap-data-table-export" class="table table-bordered">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Periode</th>
+                                    <th>Tahun</th>
+                                    <th>Penggunaan</th>
+                                    <th>Jumlah Tagihan</th>
+                                    <th>Status Pembayaran</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                        $no = 1;
+                                            foreach($tagihan as $t):
+                                    ?>
+                                                    <tr>
+                                                        <td><?= $no ?></td>
+                                                        <td><?= $t->periode ?></td>
+                                                        <td><?= $t->tahun ?></td>
+                                                        <td><?= $t->volume ?> M<sup>3</sup></td>
+                                                        <td>Rp. <?= number_format($t->total) ?></td>
+                                                        <td>
+                                                            <?php 
+                                                                if ($t->status_tagihan == 1) {
+                                                                    echo "<span class='badge badge-success'>LUNAS </span>";
+                                                                }else{
+                                                                    echo "<span class='badge badge-danger'>BELUM LUNAS </span>";
+                                                                }
+                                                            ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php 
+                                                                foreach($pembayaran as $p): 
+                                                                    if($p->tagihan_id == $t->id){
+                                                                ?>
+                                                                <a target="_blank" href="<?= base_url('pembayaran/invoice/'.$p->id) ?>" class="btn btn-warning btn-sm"><i class="fa fa-print" title="cetak" ></i> Cetak</a>
+                                                                <?php 
+                                                                    }
+                                                                    endforeach
+                                                                ?>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                    <?php
+                                            $no++;
+                                        endforeach;
+                                    ?>
+                                </tbody>
+                            </table>
                             <?php
                             }
                         ?>
