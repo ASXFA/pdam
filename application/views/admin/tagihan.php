@@ -321,6 +321,7 @@
 </div><!-- .content -->
 <!-- Modal Edit -->
 <?php 
+    if ($this->session->userdata('level') != 2) {
     foreach($tagihan as $t): 
         foreach($pelanggan as $p):
             if ($p->id == $t->pelanggan_id) {
@@ -408,4 +409,4 @@
         </div>
     </div>
 </div>
-<?php endforeach ?>
+<?php endforeach; }?>
