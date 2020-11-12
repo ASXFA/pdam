@@ -54,7 +54,7 @@ class Tagihan extends CI_Controller {
 	{
         $this->load->model('golongan_model');
         $this->load->model('pelanggan_model');
-		$mpdf = new \Mpdf\Mpdf();
+		$mpdf = new \Mpdf\Mpdf(['orientation'=>'L']);
 		$data = $this->load->view('admin/printTagihan','', TRUE);
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
@@ -68,7 +68,7 @@ class Tagihan extends CI_Controller {
         $data['bulan'] = $bulan;
         $data['status_tagihan'] = $status_tagihan;
         $data['tagihan'] = $this->tagihan_model->getByIdPrint($bulan,$tahun,$status_tagihan)->result();
-		$mpdf = new \Mpdf\Mpdf();
+		$mpdf = new \Mpdf\Mpdf(['orientation'=>'L']);
 		$data = $this->load->view('admin/printTagihanFilter',$data, TRUE);
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();

@@ -12,7 +12,7 @@
 	#outtable{
 	  	padding: 10px;
 	  	border:1px solid #e3e3e3;
-	  	width:900px;
+	  	width:auto;
 	  	border-radius: 5px;
 	  }
  

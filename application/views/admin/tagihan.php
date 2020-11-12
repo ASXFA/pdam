@@ -170,16 +170,16 @@
                                                     <?php 
                                                         foreach($pelanggan as $p):
                                                             if ($p->id == $tf->pelanggan_id) {
-                                                                echo $p->nama;
+                                                                echo $p->no_rekening;
                                                             }
-                                                        endforeach
-                                                    ?>
+                                                            endforeach
+                                                            ?>
                                                 </td>
                                                 <td>
                                                     <?php 
                                                         foreach($pelanggan as $p):
                                                             if ($p->id == $tf->pelanggan_id) {
-                                                                echo $p->no_rekening;
+                                                                echo $p->nama;
                                                             }
                                                         endforeach
                                                     ?>
@@ -274,7 +274,7 @@
                                 <tbody>
                                     <?php 
                                         $no = 1;
-                                            foreach($tagihan as $t):
+                                            foreach($tagihan2 as $t):
                                     ?>
                                                     <tr>
                                                         <td><?= $no ?></td>
@@ -320,3 +320,92 @@
     </div><!-- .animated -->
 </div><!-- .content -->
 <!-- Modal Edit -->
+<?php 
+    foreach($tagihan as $t): 
+        foreach($pelanggan as $p):
+            if ($p->id == $t->pelanggan_id) {
+                $no_rekening = $p->no_rekening;
+                $nama = $p->nama;
+                $alamat = $p->alamat;
+                $no_hp = $p->no_hp;
+            }
+        endforeach;
+?>
+<div class="modal fade" id="detailModal<?=  $t->id?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Tagihan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">No Rekening</label>
+                                            <input type="text" id="no_rekening" name="no_rekening" class="form-control" value="<?= $no_rekening ?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Nama</label>
+                                            <input type="text" id="nama" class="form-control" value="<?= $nama ?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Alamat</label>
+                                            <textarea name="alamat" id="alamat" cols="30" rows="2" class="form-control" readonly><?= $alamat ?></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">HP</label>
+                                            <input type="text" id="no_hp" value="<?= $no_hp ?>" class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Bulan</label>
+                                            <input type="text" id="bulan" value="<?= $t->periode ?>" class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Tahun</label>
+                                            <input type="text" class="form-control" value="<?= $t->tahun ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Mtr Lama</label>
+                                            <input type="number" name="mtr_lama" class="form-control" id="mtr_lama" value="<?= $t->mtr_lama ?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Mtr Baru</label>
+                                            <input type="number" name="mtr_baru" class="form-control" value="<?= $t->mtr_baru ?>" id="mtr_baru" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Volume</label>
+                                            <input type="number" name="volume" class="form-control" id="volume" value="<?= $t->volume ?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">Total Tagihan</label>
+                                            <h3>Rp. <?= number_format($t->total) ?></h3>
+                                        </div>
+                                        <div class="form-group mt-3">
+                                                <?php 
+                                                    if ($t->status_tagihan == 0) {
+                                                        echo "<span class='badge badge-danger p-2'> BELUM BAYAR </span>";
+                                                    }else{
+                                                        echo "<span class='badge badge-success p-2'> LUNAS </span>";
+                                                    }
+                                                ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endforeach ?>
