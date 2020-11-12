@@ -95,7 +95,7 @@
 						<a href="#" id="cek" class="btn btn-primary "><i class="fa fa-search"></i> Cek No.Rek</a>
 					</div>
 					<div class="container-login100-form-btn mt-4">
-						Sudah punya akun ? <a href="<?= base_url('login/daftar') ?>" class="ml-1"> <u> Login </u></a>
+						Sudah punya akun ? <a href="<?= base_url('login') ?>" class="ml-1"> <u> Login </u></a>
 					</div>
 				</form>
 			</div>

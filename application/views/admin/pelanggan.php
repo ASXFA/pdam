@@ -95,7 +95,7 @@
                                 ?>
                                 <tr>
                                     <td><?= $no ?></td>
-                                    <td><a href=""><?= $p->no_rekening ?></a></td>
+                                    <td><a href="<?= base_url('pelanggan/detailPelanggan/'.$p->no_rekening) ?>"><?= $p->no_rekening ?></a></td>
                                     <td><?= $p->nama ?></td>
                                     <td><?= $p->alamat ?></td>
                                     <td><?= $p->golongan ?></td>
@@ -142,7 +142,7 @@
                                             });
                                         </script>
                                         <a href="" data-toggle="modal" data-target="#editModal<?= $p->id ?>" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
-                                        <a href="<?= base_url('pelanggan/hapus/'.$p->id) ?>" id="btnHapus<?=$no ?>" class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash"></i></a>
+                                        <a href="<?= base_url('pelanggan/delete/'.$p->id) ?>" id="btnHapus<?=$no ?>" class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash"></i></a>
                                         <script src="<?= base_url('assets/') ?>vendors/jquery/dist/jquery.min.js"></script>
                                         <script>
                                             $('#btnHapus<?= $no ?>').on('click', function (e) {
@@ -190,25 +190,25 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="form-control-label">No Rekening</label>
-                                <input type="text" class="form-control" name="no_rekening">
+                                <input type="text" class="form-control" id="no_rekening" name="no_rekening" required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-control-label">Nama Pelanggan</label>
-                                <input type="text" class="form-control" name="nama">
+                                <input type="text" class="form-control" id="nama" name="nama" readonly required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-control-label">Alamat</label>
-                                <textarea name="alamat" id="" cols="10" rows="2" class="form-control"></textarea>
+                                <textarea name="alamat" id="alamat" cols="10" rows="2" class="form-control" readonly required></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="form-control-label">No HP</label>
-                                <input type="text" class="form-control" maxlength="12" name="no_hp">
+                                <input type="text" class="form-control" id="hp" maxlength="12" name="no_hp" readonly required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-control-label">Golongan</label>
-                                <select name="golongan" id="" class="form-control">
+                                <select name="golongan" id="golongan" class="form-control" readonly required>
                                     <?php foreach($golongan as $g): ?>
                                     <option value="<?= $g->id ?>"><?= $g->kode." - ".$g->nama ?></option>
                                     <?php endforeach; ?>
@@ -219,7 +219,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Tambah</button>
+                <button type="submit" id="btnTambah" disabled class="btn btn-primary">Tambah</button>
             </div>
             </form>
         </div>
@@ -237,26 +237,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('pelanggan/tambah') ?>" method="post">
+                <form action="<?= base_url('pelanggan/edit/'.$p->id) ?>" method="post">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="form-control-label">No Rekening</label>
-                                <input type="text" class="form-control" name="no_rekening" value="<?= $p->no_rekening ?>">
+                                <input type="text" class="form-control" name="no_rekening" value="<?= $p->no_rekening ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-control-label">Nama Pelanggan</label>
-                                <input type="text" class="form-control" name="nama" value="<?= $p->nama ?>">
+                                <input type="text" class="form-control" name="nama" value="<?= $p->nama ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-control-label">Alamat</label>
-                                <textarea name="alamat" id="" cols="10" rows="2" class="form-control"><?= $p->alamat ?></textarea>
+                                <textarea name="alamat" id="" cols="10" rows="2" class="form-control" required><?= $p->alamat ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="form-control-label">Golongan</label>
-                                <select name="golongan" id="" class="form-control">
+                                <select name="golongan" id="" class="form-control" required>
                                     <?php 
                                         foreach($golongan as $g){
                                     ?>
@@ -268,7 +268,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-control-label">No HP</label>
-                                <input type="text" class="form-control" maxlength="12" name="no_hp" value="<?= $p->no_hp ?>">
+                                <input type="text" class="form-control" maxlength="12" name="no_hp" value="<?= $p->no_hp ?>" required>
                             </div>
                         </div>
                     </div>
@@ -282,3 +282,82 @@
     </div>
 </div>
 <?php endforeach ?>
+<script src="<?= base_url('assets/') ?>vendors/jquery/dist/jquery.min.js"></script>
+<script>
+    $('#no_rekening').keyup(function(){
+        var no_rekening = $('#no_rekening').val();
+			if (no_rekening.length < 6) {
+				const Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 5000,
+					timerProgressBar: true,
+					didOpen: (toast) => {
+						toast.addEventListener('mouseenter', Swal.stopTimer)
+						toast.addEventListener('mouseleave', Swal.resumeTimer)
+					}
+				})
+
+				Toast.fire({
+					icon: 'info',
+					title: 'No Rekening minimal 6 Digit'
+				})
+            }else{
+                var norek = $('#no_rekening').val();
+                $.ajax({
+                    method:'POST',
+                    dataType:'JSON',
+                    url:'<?= base_url('pelanggan/cekNorekAdm') ?>',
+                    data:{norek:norek},
+                    success:function(response){
+                        if (response.kondisi == 1) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.pesan
+                            })
+                            
+                            $('#nama').removeAttr('readonly','readonly');
+                            $('#alamat').removeAttr('readonly','readonly');
+                            $('#hp').removeAttr('readonly','readonly');
+                            $('#golongan').removeAttr('readonly','readonly');
+                            $('#btnTambah').removeAttr('disabled','disabled');
+                        }else{
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.pesan
+                            })
+                            $('#nama').attr('readonly','readonly');
+                            $('#alamat').attr('readonly','readonly');
+                            $('#hp').attr('readonly','readonly');
+                            $('#golongan').attr('readonly','readonly');
+                        }
+                    }
+                })
+            }
+		})
+</script>

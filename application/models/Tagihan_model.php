@@ -7,6 +7,28 @@ class Tagihan_model extends CI_Model {
 	{
         $this->db->select('*');
         $this->db->from('tb_tagihan');
+        $this->db->join('tb_pelanggan','tb_pelanggan.id = tb_tagihan.pelanggan_id','LEFT');
+        return $this->db->get();
+    }
+
+    public function getSemua()
+    {
+        return $this->db->get('tb_tagihan');
+    }
+
+	public function getByIdPrint($bulan,$tahun,$status)
+	{
+        $this->db->select('*');
+        $this->db->from('tb_tagihan');
+        if ($tahun != "Semua") {
+            $this->db->where("tahun", $tahun);
+        }
+        if ($bulan != "Semua") {
+            $this->db->where('periode', $bulan);
+        }
+        if ($status != "Semua") {
+            $this->db->where('status_tagihan',$status);
+        }
         $this->db->join('tb_pelanggan','tb_pelanggan.id = tb_tagihan.pelanggan_id');
         return $this->db->get();
     }
@@ -35,6 +57,13 @@ class Tagihan_model extends CI_Model {
     {
         $this->db->where('pelanggan_id',$id);
         $this->db->order_by('id','DESC');
+        return $this->db->get('tb_tagihan');
+    }
+
+    public function getByPelIdAsc($id)
+    {
+        $this->db->where('pelanggan_id',$id);
+        $this->db->order_by('id','ASC');
         return $this->db->get('tb_tagihan');
     }
 

@@ -207,7 +207,7 @@
                             <div class="form-group">
                                 <label for="" class="form-control-label">Level</label>
                                 <select name="level" id="" class="form-control">
-                                    <?php for($i = 0; $i<1; $i++){ ?>
+                                    <?php for($i = 0; $i<2; $i++){ ?>
                                     <option value="<?= $i ?>"><?php if($i == 1){echo "Petugas";}else{echo "Administrasi";} ?></option>
                                     <?php } ?>
                                 </select>
@@ -251,7 +251,7 @@
                             <div class="form-group">
                                 <label for="" class="form-control-label">Golongan</label>
                                 <select name="level" id="" class="form-control">
-                                    <?php for($i = 1; $i<3; $i++){ ?>
+                                    <?php for($i = 0; $i<2; $i++){ ?>
                                     <option value="<?= $i ?>" <?php if($i == $u->level){echo "selected";} ?> ><?php if($i == 1){echo "Petugas";}else{echo "Administrasi";} ?></option>
                                     <?php } ?>
                                 </select>

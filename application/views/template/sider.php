@@ -20,9 +20,16 @@
                 <li>
                     <a href="<?= base_url('tagihan') ?>"> <i class="menu-icon ti-money"></i>Tagihan </a>
                 </li>   
+                <?php  
+                    if($this->session->userdata('level')!=2){
+                ?>
                 <li>
                     <a href="<?= base_url('pembayaran') ?>"> <i class="menu-icon ti-wallet"></i>Pembayaran </a>
                 </li>
+                <?php } ?>
+                <?php  
+                    if($this->session->userdata('level')== 0){
+                ?>
                 <li class="menu-item-has-children dropdown">
                     <a href="<?= base_url('assets/') ?>#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Master</a>
                     <ul class="sub-menu children dropdown-menu">
@@ -33,12 +40,12 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= base_url('assets/') ?>"> <i class="menu-icon ti-book"></i>Laporan </a>
+                    <a href="<?= base_url('pembayaran/laporan') ?>"> <i class="menu-icon ti-book"></i>Laporan </a>
                 </li>
                 <li>
                     <a href="<?= base_url('informasi') ?>"> <i class="menu-icon ti-info"></i>Informasi </a>
                 </li>
-
+                <?php } ?>
                 <h3 class="menu-title">MY ACCOUNT</h3><!-- /.menu-title -->
                 <li>
                     <a href="<?= base_url('users/detail/'.$this->session->userdata('id')) ?>"> <i class="menu-icon ti-user"></i>Profil </a>

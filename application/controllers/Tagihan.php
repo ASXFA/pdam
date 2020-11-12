@@ -14,10 +14,12 @@ class Tagihan extends CI_Controller {
         // $this->load->model('users_model');
         $this->load->model('golongan_model');
         $this->load->model('pelanggan_model');
+        $this->load->model('pembayaran_model');
         // $data['users'] = $this->users_model->getAll()->result();
         $data['golongan'] = $this->golongan_model->getAll()->result();
-        $data['tagihan'] = $this->tagihan_model->getAll()->result();
+        $data['tagihan'] = $this->tagihan_model->getSemua()->result();
         $data['pelanggan'] = $this->pelanggan_model->getAll()->result();
+        $data['pembayaran'] = $this->pembayaran_model->getAll()->result();
         if (isset($_GET['filter'])) {
             $tahun = $_GET['tahun'];
             $bulan = $_GET['bulan'];
@@ -26,6 +28,10 @@ class Tagihan extends CI_Controller {
             $data['tahun'] = $tahun;
             $data['bulan'] = $bulan;
             $data['status_tagihan'] = $status;
+        }
+        if ($this->session->userdata('level')==2) {
+            $data['pelanggan'] = $this->pelanggan_model->cekNorek($this->session->userdata('no_rekening'))->row();
+            $data['tagihan2'] = $this->tagihan_model->getByPelIdDesc($data['pelanggan']->id)->row();
         }
         $this->load->view('template/header');
         $this->load->view('template/sider');
@@ -50,6 +56,20 @@ class Tagihan extends CI_Controller {
         $this->load->model('pelanggan_model');
 		$mpdf = new \Mpdf\Mpdf();
 		$data = $this->load->view('admin/printTagihan','', TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output();
+    }
+    
+    public function printPDFFilter($bulan,$tahun,$status_tagihan)
+	{
+        $this->load->model('golongan_model');
+        $this->load->model('pelanggan_model');
+        $data['tahun'] = $tahun;
+        $data['bulan'] = $bulan;
+        $data['status_tagihan'] = $status_tagihan;
+        $data['tagihan'] = $this->tagihan_model->getByIdPrint($bulan,$tahun,$status_tagihan)->result();
+		$mpdf = new \Mpdf\Mpdf();
+		$data = $this->load->view('admin/printTagihanFilter',$data, TRUE);
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
 	}

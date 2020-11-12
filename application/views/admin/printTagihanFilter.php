@@ -1,8 +1,3 @@
-<?php 
-    $golongan = $this->golongan_model->getAll()->result();
-    $tagihan = $this->tagihan_model->getAll()->result();
-    $pelanggan = $this->pelanggan_model->getAll()->result();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +49,7 @@
 </head>
 <body>
     <div class="container">
-        <h3>Data Tagihan</h3>
+        <h3>Data Tagihan <?php if($bulan != "Semua"){echo $bulan;} ?> <?php if($tahun != "Semua"){echo $tahun;} ?></h3>
         <div id="outtable">
             <table>
                 <thead>

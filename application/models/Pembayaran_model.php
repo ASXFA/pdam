@@ -5,10 +5,7 @@ class Pembayaran_model extends CI_Model {
 
 	public function getAll()
 	{
-        $this->db->select('*');
-        $this->db->from('tb_tagihan');
-        $this->db->join('tb_pelanggan','tb_pelanggan.id = tb_tagihan.pelanggan_id');
-        return $this->db->get();
+        return $this->db->get('tb_pembayaran');
     }
 
     public function getById($id)
@@ -17,33 +14,22 @@ class Pembayaran_model extends CI_Model {
         return $this->db->get('tb_pembayaran');
     }
 
-    public function getFilter($tahun,$bulan,$status)
+    public function getFilter($bulan,$tahun)
     {
         if ($tahun != "Semua") {
-            $this->db->where("tahun", $tahun);
+            $this->db->where("year(created_at)",$tahun);
         }
         if ($bulan != "Semua") {
-            $this->db->where('periode', $bulan);
+            $this->db->where("month(created_at)",$bulan);
         }
-        if ($status != "Semua") {
-            $this->db->where('status_tagihan',$status);
-        }
-        return $this->db->get('tb_tagihan');
+        return $this->db->get('tb_pembayaran');
     }
 
-    public function getByPelIdDesc($id)
+    public function getByPelIdAsc($id)
     {
         $this->db->where('pelanggan_id',$id);
-        $this->db->order_by('id','DESC');
-        return $this->db->get('tb_tagihan');
-    }
-
-    public function getByPelIdStatAsc($id)
-    {
-        $this->db->where('pelanggan_id',$id);
-        $this->db->where('status_tagihan',0);
-        $this->db->order_by('id','ASC');
-        return $this->db->get('tb_tagihan');
+        $this->db->order_by('id','Asc');
+        return $this->db->get('tb_pembayaran');
     }
     
     public function tambah($pelanggan_id,$tagihan_id,$cash,$kembalian)

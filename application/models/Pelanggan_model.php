@@ -42,7 +42,7 @@ class Pelanggan_model extends CI_Model {
     {
         $data = array(
             'no_rekening' => $this->input->post('no_rekening'),
-            'nama' => $this->input->post('nama_pelanggan'),
+            'nama' => $this->input->post('nama'),
             'alamat' => $this->input->post('alamat'),
             'golongan' => $this->input->post('golongan'),
             'no_hp' => $this->input->post('no_hp')

@@ -78,6 +78,22 @@ class Pelanggan extends CI_Controller {
         }
     }
 
+    public function detailPelanggan($noRek)
+    {
+        $this->load->model('golongan_model');
+        $this->load->model('tagihan_model');
+        $this->load->model('pembayaran_model');
+        $data['pelanggan'] = $this->pelanggan_model->cekNorek($noRek)->row();
+        $data['golongan'] = $this->golongan_model->getById($data['pelanggan']->golongan)->row();
+        $data['tagihan'] = $this->tagihan_model->getByPelIdAsc($data['pelanggan']->id)->result();
+        $data['pembayaran'] = $this->pembayaran_model->getByPelIdAsc($data['pelanggan']->id)->result();
+        $this->load->view('template/header');
+        $this->load->view('template/sider');
+        $this->load->view('template/navbar');
+        $this->load->view('admin/detailPelanggan',$data);
+        $this->load->view('template/footer'); 
+    }
+
     public function cekNorek()
     {
         $norek = $this->input->post('norek');
@@ -93,6 +109,25 @@ class Pelanggan extends CI_Controller {
             $data = array(
                 'kondisi' => 0,
                 'pesan' => "No Rekening anda belum terdaftar. Silahkan hubungi administrasi .... "
+            );
+        }
+        echo json_encode($data);
+    }
+    public function cekNorekAdm()
+    {
+        $norek = $this->input->post('norek');
+        $query = $this->pelanggan_model->cekNorek($norek);
+        if ($query->num_rows() > 0) {
+            $q = $query->row();
+            $data = array(
+                'kondisi' => 0,
+                'pesan' => "No Rekening sudah digunakan. silahkan masukan kembali no rekening lain .... ",
+                'nama' => $q->nama
+            );
+        }else{
+            $data = array(
+                'kondisi' => 1,
+                'pesan' => "No Rekening bisa dipakai.... "
             );
         }
         echo json_encode($data);

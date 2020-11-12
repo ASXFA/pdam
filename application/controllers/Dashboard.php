@@ -14,7 +14,15 @@ class Dashboard extends CI_Controller {
 	public function index()
 	{
                 $this->load->model('informasi_model');
+                $this->load->model('pelanggan_model');
+                $this->load->model('users_model');
+                $this->load->model('tagihan_model');
+                $this->load->model('golongan_model');
                 $data['informasi'] = $this->informasi_model->getAll()->result();
+                $data['pelanggan'] = $this->users_model->getAll()->num_rows();
+                $data['users'] = $this->users_model->getAll()->num_rows();
+                $data['tagihan'] = $this->tagihan_model->getAll()->num_rows();
+                $data['golongan'] = $this->golongan_model->getAll()->num_rows();
                 $this->load->view('template/header');
                 $this->load->view('template/sider');
                 $this->load->view('template/navbar');

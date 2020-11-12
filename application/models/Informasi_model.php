@@ -13,7 +13,7 @@ class Informasi_model extends CI_Model {
         $data = array(
             'judul' => $this->input->post('judul'),
             'deskripsi' => $this->input->post('deskripsi'),
-            'created_by' => 1,
+            'created_by' => $this->session->userdata('id'),
             'status' => 0
         );
         $query = $this->db->insert('tb_informasi',$data);

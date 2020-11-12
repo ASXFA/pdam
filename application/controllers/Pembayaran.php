@@ -20,25 +20,49 @@ class Pembayaran extends CI_Controller {
             $this->load->view('template/footer'); 
     }
 
-    // public function coba()
-    // {
-    //     $this->load->model('golongan_model');
-    //     $this->load->model('pelanggan_model');
-    //     $datas['golongan'] = $this->golongan_model->getAll()->result();
-    //     $datas['tagihan'] = $this->tagihan_model->getAll()->result();
-    //     $datas['pelanggan'] = $this->pelanggan_model->getAll()->result();
-	// 	$this->load->view('admin/printTagihan', $datas);
-    // }
+    public function laporan()
+    {
+        $this->load->model('pelanggan_model');
+        $this->load->model('tagihan_model');
+        $data['judul'] = "laporan";
+        if(isset($_GET['filter'])){
+            if ($_GET['bulan'] == "Semua" && $_GET['tahun'] == "Semua") {
+                $data['pelanggan'] = $this->pelanggan_model->getAll()->result();
+                $data['tagihan'] = $this->tagihan_model->getSemua()->result();
+                $data['pembayaran'] = $this->pembayaran_model->getAll()->result();
+            }else{
+                $data['pembayaran'] = $this->pembayaran_model->getFilter($_GET['bulan'],$_GET['tahun'])->result();
+                $data['pelanggan'] = $this->pelanggan_model->getAll()->result();
+                $data['tagihan'] = $this->tagihan_model->getSemua()->result();
+            }
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sider');
+        $this->load->view('template/navbar');
+        $this->load->view('admin/laporan',$data);
+        $this->load->view('template/footer');
+    }
 
-    // public function printPDF()
-	// {
-    //     $this->load->model('golongan_model');
-    //     $this->load->model('pelanggan_model');
-	// 	$mpdf = new \Mpdf\Mpdf();
-	// 	$data = $this->load->view('admin/printTagihan','', TRUE);
-	// 	$mpdf->WriteHTML($data);
-	// 	$mpdf->Output();
-	// }
+    public function printPDFFilter($bulan,$tahun)
+	{
+        $this->load->model('tagihan_model');
+        $this->load->model('pelanggan_model');
+        $data['tahun'] = $tahun;
+        $data['bulan'] = $bulan;
+        if ($bulan == "Semua" && $tahun == "Semua") {
+            $data['pelanggan'] = $this->pelanggan_model->getAll()->result();
+            $data['tagihan'] = $this->tagihan_model->getSemua()->result();
+            $data['pembayaran'] = $this->pembayaran_model->getAll()->result();
+        }else{
+            $data['pembayaran'] = $this->pembayaran_model->getFilter($bulan,$tahun)->result();
+            $data['pelanggan'] = $this->pelanggan_model->getAll()->result();
+            $data['tagihan'] = $this->tagihan_model->getSemua()->result();
+        }
+		$mpdf = new \Mpdf\Mpdf(['orientation' => 'L']);
+		$data = $this->load->view('admin/printPembayaran',$data, TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output('laporan.pdf','I');
+	}
     
     public function tambah()
     {
@@ -68,18 +92,34 @@ class Pembayaran extends CI_Controller {
         $tagihann = $this->tagihan_model->getByPelIdStatAsc($id);
         $tagihan = $tagihann->row();
         if ($tagihann->num_rows() > 0) {
-            $data = array(
-                'konidisi' => 1,
-                'tagihan_id' => $tagihan->id,
-                'pelanggan_id' => $pelanggan->id,
-                'no_rekening' => $pelanggan->no_rekening,
-                'nama' => $pelanggan->nama,
-                'alamat' => $pelanggan->alamat,
-                'no_hp' => $pelanggan->no_hp,
-                'periode' => $tagihan->periode,
-                'total' => $tagihan->total,
-                'denda' => $golongan->denda
-            );
+            $tglSekarang = date('d');
+            if ($tglSekarang > $golongan->tempo) {
+                $data = array(
+                    'konidisi' => 1,
+                    'tagihan_id' => $tagihan->id,
+                    'pelanggan_id' => $pelanggan->id,
+                    'no_rekening' => $pelanggan->no_rekening,
+                    'nama' => $pelanggan->nama,
+                    'alamat' => $pelanggan->alamat,
+                    'no_hp' => $pelanggan->no_hp,
+                    'periode' => $tagihan->periode,
+                    'total' => $tagihan->total,
+                    'denda' => $golongan->denda
+                );
+            }else{
+                $data = array(
+                    'konidisi' => 1,
+                    'tagihan_id' => $tagihan->id,
+                    'pelanggan_id' => $pelanggan->id,
+                    'no_rekening' => $pelanggan->no_rekening,
+                    'nama' => $pelanggan->nama,
+                    'alamat' => $pelanggan->alamat,
+                    'no_hp' => $pelanggan->no_hp,
+                    'periode' => $tagihan->periode,
+                    'total' => $tagihan->total,
+                    'denda' => 0
+                );
+            }
         }else{
             $data = array(
                 'kondisi' => 0,
@@ -100,153 +140,6 @@ class Pembayaran extends CI_Controller {
         $this->load->view('admin/invoice',$data);
         $this->load->view('template/footer');
     }
-
-    // public function ambilGolLevel()
-    // {
-    //     $this->load->model('golongan_model');
-    //     $this->load->model('golongan_level_model');
-    //     $this->load->model('level_model');
-    //     $golId = $this->input->post('golId');
-    //     $volume = $this->input->post('volume');
-    //     $golongan = $this->golongan_model->getById($golId)->row();
-    //     $golonganLevel = $this->golongan_level_model->getByGolId($golId)->result();
-    //     $level = $this->level_model->getAll()->result();
-    //     foreach($golonganLevel as $gl):
-    //         foreach($level as $l):
-    //             if ($l->id == $gl->deskripsi) {
-    //                 if ($l->status == 1) {
-    //                     if(($l->operand == NULL)){
-    //                         if ($volume <= $l->nilai_akhir) {
-    //                             $hitung = $gl->harga * $volume;
-    //                             $data = array(
-    //                                 'harga' => $hitung,
-    //                                 'beban' => $golongan->beban,
-    //                                 'volume' => $volume,
-    //                                 'golongan' => $gl->level,
-    //                                 'operand' => $l->operand
-    //                             );
-    //                         }
-    //                     }else if($l->nilai_akhir == 0 ){
-    //                         if ($l->operand == "<") {
-    //                             if ($volume < $l->nilai_awal) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == "<="){
-    //                             if ($volume <= $l->nilai_awal) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == "=="){
-    //                             if ($volume == $l->nilai_awal) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == ">"){
-    //                             if ($volume > $l->nilai_awal) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == ">="){
-    //                             if ($volume >= $l->nilai_awal) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand 
-    //                                 );
-    //                             }
-    //                         }
-    //                     }else{
-    //                         if ($l->operand == "<") {
-    //                             if ($volume < $l->nilai_awal && $volume <= $l->nilai_akhir) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand 
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == "<="){
-    //                             if ($volume <= $l->nilai_awal && $volume <= $l->nilai_akhir) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand 
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == "=="){
-    //                             if ($volume == $l->nilai_awal && $volume <= $l->nilai_akhir) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand 
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == ">"){
-    //                             if ($volume > $l->nilai_awal && $volume <= $l->nilai_akhir) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand 
-    //                                 );
-    //                             }
-    //                         }else if($l->operand == ">="){
-    //                             if ($volume > $l->nilai_awal && $volume <= $l->nilai_akhir) {
-    //                                 $hitung = $gl->harga * $volume;
-    //                                 $data = array(
-    //                                     'harga' => $hitung,
-    //                                     'beban' => $golongan->beban,
-    //                                     'volume' => $volume,
-    //                                     'golongan' => $gl->level,
-    //                                     'operand' => $l->operand 
-    //                                 );
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         endforeach;
-    //     endforeach;
-    //     echo json_encode($data);
-    // }
 
     public function edit($id)
     {

@@ -71,7 +71,7 @@
                             <tr>
                                 <td width="10%"><h5>Status</h5></td>
                                 <td width="1%"> : </td>
-                                <td width="20%"><?= $pelanggan->status ?></td>
+                                <td width="20%"><?php if($pelanggan->status == 0){echo "Belum Aktif";}else{echo "Aktif";} ?></td>
                             </tr>
                         </table>
                     </div>
