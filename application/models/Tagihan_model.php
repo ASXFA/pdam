@@ -13,6 +13,13 @@ class Tagihan_model extends CI_Model {
 
     public function getSemua()
     {
+        $this->db->order_by('status_tagihan','ASC');
+        return $this->db->get('tb_tagihan');
+    }
+
+    public function getTagihanUsers()
+    {
+        $this->db->order_by('pelanggan_id','ASC');
         return $this->db->get('tb_tagihan');
     }
 
@@ -50,6 +57,7 @@ class Tagihan_model extends CI_Model {
         if ($status != "Semua") {
             $this->db->where('status_tagihan',$status);
         }
+        $this->db->order_by('status_tagihan','ASC');
         return $this->db->get('tb_tagihan');
     }
 

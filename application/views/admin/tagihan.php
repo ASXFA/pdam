@@ -152,6 +152,7 @@
                                             <th>#</th>
                                             <th>No.Rek</th>
                                             <th>Pelanggan</th>
+                                            <th>Volume Pemakaian</th>
                                             <th>total</th>
                                             <th>Periode</th>
                                             <th>Tahun</th>
@@ -170,7 +171,9 @@
                                                     <?php 
                                                         foreach($pelanggan as $p):
                                                             if ($p->id == $tf->pelanggan_id) {
-                                                                echo $p->no_rekening;
+                                                ?>
+                                                <a href="<?= base_url('pelanggan/detailPelanggan/'.$p->no_rekening) ?>"><?= $p->no_rekening ?></a>
+                                                <?php
                                                             }
                                                             endforeach
                                                             ?>
@@ -184,6 +187,7 @@
                                                         endforeach
                                                     ?>
                                                 </td>
+                                                <td><?= $tf->volume ?> M<sup>3</sup></td>
                                                 <td>Rp. <?= number_format($tf->total) ?></td>
                                                 <td><?= $tf->periode ?></td>
                                                 <td><?= $tf->tahun ?></td>
@@ -218,7 +222,9 @@
                                                     <?php 
                                                         foreach($pelanggan as $p):
                                                             if ($p->id == $tf->pelanggan_id) {
-                                                                echo $p->nama;
+                                                ?>
+                                                <a href="<?= base_url('pelanggan/detailPelanggan/'.$p->no_rekening) ?>"><?= $p->no_rekening ?></a>
+                                                <?php
                                                             }
                                                         endforeach
                                                     ?>
@@ -227,11 +233,12 @@
                                                     <?php 
                                                         foreach($pelanggan as $p):
                                                             if ($p->id == $tf->pelanggan_id) {
-                                                                echo $p->no_rekening;
+                                                                echo $p->nama;
                                                             }
                                                         endforeach
                                                     ?>
                                                 </td>
+                                                <td><?= $tf->volume ?> M<sup>3</sup></td>
                                                 <td>Rp. <?= number_format($tf->total) ?></td>
                                                 <td><?= $tf->periode ?></td>
                                                 <td><?= $tf->tahun ?></td>

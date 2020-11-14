@@ -98,17 +98,16 @@
                                     <td width="30%"><?= $in->deskripsi ?></td>
                                     <td>
                                         <?php 
-                                            // foreach($users as $u):
-                                                //     if ($u->id == $in->created_by) {
-                                                    //         echo $u->nama." | ";
-                                                    //         if ($u->level == 1) {
-                                                        //             echo "Administration";
-                                                        //         }else if($u->level == 2){
-                                                            //             echo "Petugas";
-                                                            //         }
-                                                            //     }
-                                                            // endforeach;
-                                                            echo $in->created_by;
+                                            foreach($users as $u):
+                                                if ($u->id == $in->created_by) {
+                                                    echo $u->nama." | ";
+                                                    if ($u->level == 0) {
+                                                        echo "Administration";
+                                                    }else if($u->level == 1){
+                                                        echo "Petugas";
+                                                    }
+                                                }
+                                            endforeach;
                                         ?>
                                     </td>
                                     <td><?= date('d F Y H:i:s',strtotime($in->created_at)) ?></td>

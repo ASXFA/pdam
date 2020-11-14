@@ -11,6 +11,10 @@ class Users extends CI_Controller {
 
 	public function index()
 	{
+        $this->load->model('pelanggan_model');
+        $this->load->model('tagihan_model');
+        $data['pelanggan'] = $this->pelanggan_model->getAll()->result();
+        $data['tagihan'] = $this->tagihan_model->getTagihanUsers()->result();
         $data['users'] = $this->users_model->getAll()->result();
         $this->load->view('template/header');
         $this->load->view('template/sider');

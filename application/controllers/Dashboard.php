@@ -18,8 +18,8 @@ class Dashboard extends CI_Controller {
                 $this->load->model('users_model');
                 $this->load->model('tagihan_model');
                 $this->load->model('golongan_model');
-                $data['informasi'] = $this->informasi_model->getAll()->result();
-                $data['pelanggan'] = $this->users_model->getAll()->num_rows();
+                $data['informasi'] = $this->informasi_model->getByStatus(1)->result();
+                $data['pelanggan'] = $this->pelanggan_model->getAll()->num_rows();
                 $data['users'] = $this->users_model->getAll()->num_rows();
                 $data['tagihan'] = $this->tagihan_model->getAll()->num_rows();
                 $data['golongan'] = $this->golongan_model->getAll()->num_rows();

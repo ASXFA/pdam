@@ -7,7 +7,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="<?= base_url('assets/') ?>./">Nama Aplikasi</a>
+            <a class="navbar-brand" href="<?= base_url('') ?>./">ABERLIN</a>
             <a class="navbar-brand hidden" href="<?= base_url('assets/') ?>./"><img src="<?= base_url('assets/') ?>images/logo2.png" alt="Logo"></a>
         </div>
 
@@ -42,10 +42,13 @@
                 <li>
                     <a href="<?= base_url('pembayaran/laporan') ?>"> <i class="menu-icon ti-book"></i>Laporan </a>
                 </li>
+                <?php } 
+                    if ($this->session->userdata('level')!=2) {
+                ?>
                 <li>
                     <a href="<?= base_url('informasi') ?>"> <i class="menu-icon ti-info"></i>Informasi </a>
                 </li>
-                <?php } ?>
+                    <?php } ?>
                 <h3 class="menu-title">MY ACCOUNT</h3><!-- /.menu-title -->
                 <li>
                     <a href="<?= base_url('users/detail/'.$this->session->userdata('id')) ?>"> <i class="menu-icon ti-user"></i>Profil </a>

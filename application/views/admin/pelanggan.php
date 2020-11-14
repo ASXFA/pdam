@@ -98,7 +98,15 @@
                                     <td><a href="<?= base_url('pelanggan/detailPelanggan/'.$p->no_rekening) ?>"><?= $p->no_rekening ?></a></td>
                                     <td><?= $p->nama ?></td>
                                     <td><?= $p->alamat ?></td>
-                                    <td><?= $p->golongan ?></td>
+                                    <td>
+                                        <?php 
+                                            foreach($golongan as $g):
+                                                if ($g->id == $p->golongan) {
+                                                    echo $g->kode." | ".$g->nama;
+                                                }
+                                            endforeach
+                                        ?>
+                                    </td>
                                     <td><?= $p->no_hp ?></td>
                                     <td>
                                         <?php 

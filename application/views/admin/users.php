@@ -80,6 +80,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nama</th>
+                                    <th>No Rekening</th>
                                     <th>Username</th>
                                     <th>Level</th>
                                     <th>Status</th>
@@ -94,6 +95,17 @@
                                 <tr>
                                     <td><?= $no ?></td>
                                     <td><?= $u->nama ?></td>
+                                    <td>
+                                        <?php 
+                                            if($u->no_rekening == NULL){
+                                                echo " - ";
+                                            }else{
+                                                ?>
+                                                <a href="<?= base_url('pelanggan/detailPelanggan/'.$u->no_rekening) ?>"><?= $u->no_rekening ?></a>
+                                                <?php
+                                            }
+                                        ?>
+                                    </td>
                                     <td><?= $u->username ?></td>
                                     <td>
                                         <?php 

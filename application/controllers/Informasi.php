@@ -11,8 +11,8 @@ class Informasi extends CI_Controller {
 
 	public function index()
 	{
-        // $this->load->model('users_model');
-        // $data['users'] = $this->users_model->getAll()->result();
+        $this->load->model('users_model');
+        $data['users'] = $this->users_model->getUsers()->result();
         $data['informasi'] = $this->informasi_model->getAll()->result();
         $this->load->view('template/header');
         $this->load->view('template/sider');

@@ -26,6 +26,20 @@
                                     <td><h5>Golongan</h5></td>
                                     <td><?= $golongan->kode." | ".$golongan->nama ?></td>
                                 </tr>
+                                <tr>
+                                    <td><h5>Total Volume Pemakaian Air (Total)</h5></td>
+                                    <td>
+                                        <?php 
+                                            $jmlh = 0;
+                                            $periode = 0;
+                                            foreach($tagihan as $t): 
+                                                $jmlh += $t->volume;
+                                                $periode += 1;
+                                            endforeach;
+                                            echo $jmlh." M<sup>3</sup> dalam ".$periode." Periode / Bulan ";
+                                        ?>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>

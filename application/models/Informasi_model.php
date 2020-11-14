@@ -7,6 +7,12 @@ class Informasi_model extends CI_Model {
 	{
         return $this->db->get('tb_informasi');
     }
+
+	public function getByStatus($stat)
+	{
+        $this->db->where('status',$stat);
+        return $this->db->get('tb_informasi');
+    }
     
     public function tambah()
     {
