@@ -121,7 +121,9 @@ class Users extends CI_Controller {
 	{
         if ($this->session->userdata('level') == 2) {
             $this->load->model('pelanggan_model');
+            $this->load->model('golongan_model');
             $data['pelanggan'] = $this->pelanggan_model->cekNorek($this->session->userdata('no_rekening'))->row();
+            $data['golongan'] = $this->golongan_model->getAll()->result();
         }
         $data['users'] = $this->users_model->getById($id)->row();
         $this->load->view('template/header');

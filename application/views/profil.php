@@ -61,7 +61,14 @@
                             <tr>
                                 <td width="10%"><h5>Golongan</h5></td>
                                 <td width="1%"> : </td>
-                                <td width="20%"><?= $pelanggan->golongan ?></td>
+                                <td width="20%">                                        
+                                        <?php 
+                                            foreach($golongan as $g):
+                                                if ($g->id == $pelanggan->golongan) {
+                                                    echo $g->kode." | ".$g->nama;
+                                                }
+                                            endforeach
+                                        ?></td>
                             </tr>
                             <tr>
                                 <td width="10%"><h5>No Hp</h5></td>
