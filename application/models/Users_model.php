@@ -5,7 +5,7 @@ class Users_model extends CI_Model {
 
 	public function getAll()
 	{
-        $this->db->not_like('id',$this->session->userdata('id'));
+        // $this->db->not_like('id',$this->session->userdata('id'));
         return $this->db->get('tb_users');
     }
 
